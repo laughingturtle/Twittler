@@ -10,7 +10,7 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
 
 <!-- JS -->
     <script src="js/jquery.js"></script>
@@ -35,43 +35,22 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Twit Lite for Orange Balloons</a>
+          <a class="navbar-brand" href="#">Twit Lite</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <!--<form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div> -->
-            <!--
-            <div class="form-group">
-              <input type="password" placeholder="Tweet Me Baby!" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Tweet</button>
-          </form> -->
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <!-- <div class="jumbotron">
-      <div class="container">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
-      </div>
-
-    </div> -->
 
     <div class="container" style="margin-top: 80px;">
-      <!-- Example row of columns -->
+    
       <div class="row">
         <div class="col-md-3">
-          <h2 style="color: #fff;font-size: 80px">HARK! </br></br> DOOM IS UPON US!!</h2>
+          <h2 style="color: #fff;font-size: 80px"></h2>
           <p></p>
-          <!--<p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p> -->
         </div>
         <div class="col-md-9">
-          <!-- <h2>Heading</h2> -->
           <div class="" style="margin-left: -20px; width: 400px; padding-bottom:40px;">
 
           <form class="navbar-form navbar-center" id="tweetForm" action="index.html">  
@@ -80,27 +59,28 @@
             <div class="form-group">
     
               <input type="text" class="form-control" id="twitterName" aria-describedby="twittername" name="twitterName" placeholder="Your twitler name" style="margin-bottom: 10px;">
-            <!-- <small id="twittername" class="form-text text-muted">We'll never share your Twitter name with anyone else... HAHAHAHA Just Kidding!! </small> -->
+           
             </div>
 
             <div class="form-group"> 
               <textarea class="form-control"  placeholder="Tweet at me already!" id="textareaContent" name="textareaContent" style="min-width: 400px;" rows="2"></textarea>
             </div>
           </br>
-          <button type="submit" name="submit"style="margin-top: 10px; text-align: right;" class="btn btn-warning pull-right">Tweet</button>
+          <button type="submit" name="submit"style="margin-top: 10px; text-align: right;" class="btn btn-success pull-right">Tweet</button>
           </form>  
         </div>
+          <div class="back" onclick="back()">  
+            <p> <button type="submit" name="submit"style="margin-top: 10px; text-align: right;" class="btn btn-primary">Back</button></p>
+          </div>  
+          <div class="content2">  
+            
+          </div>  
 
           <div class="content">  
-          <p>replace me. </p>
+            <p>replace me. </p>
           
-        </div>
+          </div>
        </div>
-       <!-- <div class="col-md-3">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div> -->
       </div>
 
       <hr>
@@ -111,12 +91,15 @@
     </div> <!-- /container -->
 
     <script>
-    
-    console.log('twitter users = ', users);
-    console.log('twitter streams = ',streams);
-    console.log('twitter streams.users = ', streams.users);
-    console.log('twitter streams.home = ', streams.home);
-    console.log('twitter streams.singleuser = ', streams.users.shawndrost);
+
+    /*
+    console.log('users = ', users);
+    console.log('streams = ',streams);
+    console.log('streams.users = ', streams.users);
+    console.log('streams.home = ', streams.home);
+    console.log('streams.singleuser = ', streams.users.shawndrost);
+    console.log('///////////////////////////////////////////////////////// ');
+    */
 
     var displayed = 0;
     var total = 0;
@@ -124,72 +107,104 @@
 
     // set interval - update the page every interval.
 
+    var myVar;
+    var myTimeVar; 
+    var indexPage = true;
+
+    var tweet;
+    // console.log('my tweet = ', tweet)
+    var user;
+
+    var newuser;
+
+    var newTweetsArray = [];
+
       $(document).ready(function(){
 
-        jQuery("time.timeago").timeago();
+    //    jQuery("time.timeago").timeago();
 
-
+        $('.back').hide();
         var $content = $('.content');
         $content.html('');
 
         var index = streams.home.length - 1;
-
-        var myVar;
+       
 
        function checkArr(){
           total = streams.home.length-1;
           diff = total - displayed; 
-          setTimeout(checkArr, 300);
-          mytimer();
-     //     addNewTweets();
+          myTimeVar = setTimeout(checkArr, 300); 
+        if(indexPage === true){
+          if( diff > 0){
+            mytimer();
+          }
+        }  
        }
        
-
        function mytimer() {
-          myVar = setInterval(addNewTweets, 2000);
+          myVar = setInterval(addNewTweets, 5000);
         }
 
 
+/*  First Run -- add the first results ///////////////////////////////     */      
         function firstRunInitTweetStream(){
           while(index >= 0){
             var tweet = streams.home[index];
             var $tweet = $('<div></div>');
-            $tweet.html('<p> <a href="detail.html?id=' + tweet.user + '">@' + tweet.user + '</a> <small>' + jQuery.timeago(tweet.created_at.toISOString()) + '</small> </br> ' + tweet.message + '</p> ');
+            user = tweet.user;
+            $tweet.html('<p> <a href="#"  id="singleUserClick">@' +  user + '</a> <small>' + tweet.created_at.toLocaleString() + '</small> </br> ' + tweet.message + '</p> ');
             $tweet.prependTo($content);
             index -= 1;
             displayed++; 
+
             checkArr();
+
+
           }
+             $( "a" ).on( "click", function() {
+              //clearTimeout(myVar);
+             // clearInterval(myTimeVar);
+ //            console.log("Whoa You clicked me!");
+              showIndividualUserTweets(user);
+            });
         }  
 
+/*  Add new tweets  ///////////////////////////////     */    
       function addNewTweets(){
          /* console.log('displayed ', displayed);
           console.log('total ', total);
           console.log('diff ', diff);
           console.log('index ', index);*/
+          indexPage = false;
 
           while(diff >= 0 && total >= 0){
             index = streams.home.length - 1;
-            var tweet = streams.home[index];
             var $tweet = $('<div></div>');
-         //   console.log('tweet.user ', tweet.user);
-            $tweet.html('<p> <a href="detail.html?id=' + tweet.user + '">@' + tweet.user + '</a> <small>' + jQuery.timeago(tweet.created_at.toISOString()) + '</small> </br> ' + tweet.message + '</p> ');
+            tweet = streams.home[index];
+            user = tweet.user;
+            $tweet.html('<p> <a href="#"  id="singleUserClick">@' +  user + '</a> <small>' + tweet.created_at.toLocaleString() + '</small> </br> ' + tweet.message + '</p> ');
             $tweet.prependTo($content);
             diff -= 1;
             index -= 1;
             displayed++; 
+            
           }
+             $( "a" ).on( "click", function() {
+              showIndividualUserTweets(user);
+            });
+
+
         }  
-        
 
       firstRunInitTweetStream();  
+      indexPage = true;
 
       });
 
-      // Add Form Data  
+/*  Add Form data ///////////////////////////////     */    
       $( "form" ).submit(function( event ) {
         var arr = $( this ).serializeArray();
-        console.log('my arr = ', arr);
+//        console.log('my arr = ', arr);
         var dateStamp = new Date();
         var $content = $('.content');
         
@@ -197,14 +212,111 @@
         var TwitterMessage = JSON.stringify(arr[1]["value"]);
         TwitterHandel = TwitterHandel.replace(/"/g, '');
         TwitterMessage = TwitterMessage.replace(/"/g, '');
-        // TwitterMessage = TwitterMessage.replace(/\r\n/g, ' ');
+        
+     // newuser = TwitterHandel;
 
         var $newTweet = $('<div></div>');
-        $newTweet.html('<p> <a href="detail.html?id=' + TwitterHandel + '">@' + TwitterHandel + '</a> <small>' + jQuery.timeago(dateStamp) + '</small> </br> ' + TwitterMessage + '</p> ');
+        $newTweet.html('<p> <a id="addNewTweetBtn" href="#" onclick="showIndividualNewUserTweets('+ TwitterHandel +')">@' + TwitterHandel + '</a> <small>' + dateStamp.toLocaleString() + '</small> </br> ' + TwitterMessage + '</p> ');
         $newTweet.prependTo($content);
         event.preventDefault();
+        
+        var newTweetObj = {};
+        newTweetObj.user = TwitterHandel;
+        newTweetObj.message = TwitterMessage;
+        newTweetObj.created_at = '' + dateStamp;
+        console.log('my new tweet user = ', newTweetObj.user);
+        console.log("my new obj = ", newTweetObj);
+
+        newTweetsArray.push(newTweetObj)
+        console.log('newTweetsArray = ', newTweetsArray);
+
+        $( "a" ).on( "click", function() {
+              //clearTimeout(myVar);
+             // clearInterval(myTimeVar);
+          console.log("my new user is from inside the a click function = ", TwitterHandel);
+          showIndividualNewUserTweets(TwitterHandel);
+        });
+
         $("form")[0].reset();
+
       });
+
+
+/*  Show the Individual User tweets  ///////////////////////////////     */    
+  function showIndividualUserTweets(userName){
+   /* console.log('displayed ', displayed);
+    console.log('total ', total);
+    console.log('diff ', diff);
+    console.log('index ', index);*/
+    $('.back').show();
+//    console.log('line 235: my username inside showIndividualUserTweets function', userName);
+
+    $content = $('.content');
+    $content.hide();  
+    $content2 = $('.content2');
+    $content2.html('');
+    $content2.show();
+    
+    for(var i = 0; i < streams.users[userName].length; i++){    
+      var msg = streams.users[userName][i].message;
+      var user = streams.users[userName][i].user;   
+      var userTime = streams.users[userName][i].created_at.toLocaleString();  
+      var $userTweetStream = $('<div></div>');
+
+      $userTweetStream.html('<p>@' + user + '<small> ' + userTime +  '</small></br>'  +  msg + '</p>');
+      $userTweetStream.prependTo($content2); 
+
+
+  //  console.log(user + ', ' + userTime +  '\n'  +  msg  );
+
+    }
+  } 
+
+
+/*  Show the NEW USER Individual User tweets  ///////////////////////////////     */ 
+  function showIndividualNewUserTweets(newUserName){
+   /* console.log('displayed ', displayed);
+    console.log('total ', total);
+    console.log('diff ', diff);
+    console.log('index ', index);*/
+    $('.back').show();
+//    console.log('line 275: my username inside show NEW IndividualUserTweets function', newUserName);
+
+    $content = $('.content');
+    $content.hide();  
+    $content2 = $('.content2');
+    $content2.html('');
+    $content2.show();  
+//  console.log('line 283: newTweetsArray = ', newTweetsArray);
+
+    var filteredArr = filterItems(newUserName);
+//   console.log(filteredArr);  
+//   console.log('my username length in the array = ', newTweetsArray[newUserName].length); 
+
+     for(var i = 0; i < filteredArr.length; i++){   
+        var user = filteredArr[i].user;
+        var msg = filteredArr[i].message;
+        var userTime = filteredArr[i].created_at.toLocaleString(); 
+  //      console.log(user + ', ' + userTime +  '\n'  +  msg  );
+
+        var $newUserTweetStream = $('<div></div>');
+        $newUserTweetStream.html('<p>@' + user + '<small> ' + userTime +  '</small></br>'  +  msg + '</p>');
+        $newUserTweetStream.prependTo($content2); 
+
+    }
+  } 
+
+     function filterItems(query) {
+      return newTweetsArray.filter(function({user}) {
+        return user.toLowerCase().indexOf(query.toLowerCase()) > -1;
+      })
+    }
+    
+    function back(){
+      $('.back').hide();
+      $('.content').show(); 
+      $('.content2').hide(); 
+    }
 
 // add a tweet by someone
 // see the refreshing tweet stream
