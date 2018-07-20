@@ -92,119 +92,95 @@
 
     <script>
 
-    /*
-    console.log('users = ', users);
-    console.log('streams = ',streams);
-    console.log('streams.users = ', streams.users);
-    console.log('streams.home = ', streams.home);
-    console.log('streams.singleuser = ', streams.users.shawndrost);
-    console.log('///////////////////////////////////////////////////////// ');
-    */
-
     var displayed = 0;
     var total = 0;
     var diff = 0;
-
-    // set interval - update the page every interval.
 
     var myVar;
     var myTimeVar; 
     var indexPage = true;
 
     var tweet;
-    // console.log('my tweet = ', tweet)
     var user;
 
     var newuser;
 
     var newTweetsArray = [];
 
-      $(document).ready(function(){
+    $(document).ready(function(){
 
-    //    jQuery("time.timeago").timeago();
+      $('.back').hide();
+      var $content = $('.content');
+      $content.html('');
 
-        $('.back').hide();
-        var $content = $('.content');
-        $content.html('');
+      var index = streams.home.length - 1; 
 
-        var index = streams.home.length - 1;
-       
-
-       function checkArr(){
-          total = streams.home.length-1;
-          diff = total - displayed; 
-          myTimeVar = setTimeout(checkArr, 300); 
-        if(indexPage === true){
-          if( diff > 0){
-            mytimer();
-          }
-        }  
-       }
-       
-       function mytimer() {
-          myVar = setInterval(addNewTweets, 5000);
+     function checkArr(){
+        total = streams.home.length-1;
+        diff = total - displayed; 
+        myTimeVar = setTimeout(checkArr, 300); 
+      if(indexPage === true){
+        if( diff > 0){
+          mytimer();
         }
+      }  
+     }
+     
+     function mytimer() {
+        myVar = setInterval(addNewTweets, 5000);
+      }
 
 
 /*  First Run -- add the first results ///////////////////////////////     */      
-        function firstRunInitTweetStream(){
-          while(index >= 0){
-            var tweet = streams.home[index];
-            var $tweet = $('<div></div>');
-            user = tweet.user;
-            $tweet.html('<p> <a href="#"  id="singleUserClick">@' +  user + '</a> <small>' + tweet.created_at.toLocaleString() + '</small> </br> ' + tweet.message + '</p> ');
-            $tweet.prependTo($content);
-            index -= 1;
-            displayed++; 
+      function firstRunInitTweetStream(){
+        while(index >= 0){
+          var tweet = streams.home[index];
+          var $tweet = $('<div></div>');
+          user = tweet.user;
+          $tweet.html('<p> <a href="#" id="singleUserClick">@' +  user + '</a> <small>' + tweet.created_at.toLocaleString() + '</small> </br> ' + tweet.message + '</p> ');
+          $tweet.prependTo($content);
+          index -= 1;
+          displayed++; 
 
-            checkArr();
+          checkArr();
 
+        }
 
-          }
-             $( "a" ).on( "click", function() {
-              //clearTimeout(myVar);
-             // clearInterval(myTimeVar);
- //            console.log("Whoa You clicked me!");
-              showIndividualUserTweets(user);
-            });
-        }  
+       $( "#singleUserClick" ).on( "click", function() {
+        showIndividualUserTweets(user);
+        });
+       }  
 
 /*  Add new tweets  ///////////////////////////////     */    
-      function addNewTweets(){
-         /* console.log('displayed ', displayed);
-          console.log('total ', total);
-          console.log('diff ', diff);
-          console.log('index ', index);*/
-          indexPage = false;
+    function addNewTweets(){
+       /* console.log('displayed ', displayed);
+        console.log('total ', total);
+        console.log('diff ', diff);
+        console.log('index ', index);*/
+       indexPage = false;
 
-          while(diff >= 0 && total >= 0){
-            index = streams.home.length - 1;
-            var $tweet = $('<div></div>');
-            tweet = streams.home[index];
-            user = tweet.user;
-            $tweet.html('<p> <a href="#"  id="singleUserClick">@' +  user + '</a> <small>' + tweet.created_at.toLocaleString() + '</small> </br> ' + tweet.message + '</p> ');
-            $tweet.prependTo($content);
-            diff -= 1;
-            index -= 1;
-            displayed++; 
-            
-          }
-             $( "a" ).on( "click", function() {
-              showIndividualUserTweets(user);
-            });
+        while(diff >= 0 && total >= 0){
+          index = streams.home.length - 1;
+          var $tweet = $('<div></div>');
+          tweet = streams.home[index];
+          user = tweet.user;
+          $tweet.html('<p> <a href="#" id="singleUserClick1">@' +  user + '</a> <small>' + tweet.created_at.toLocaleString() + '</small> </br> ' + tweet.message + '</p> ');
+          $tweet.prependTo($content);
+          diff -= 1;
+          index -= 1;
+          displayed++; 
+          
+        }
 
+       $( "#singleUserClick1" ).on( "click", function() {
+        showIndividualUserTweets(user);
+        });
+       }   
 
-        }  
-
-      firstRunInitTweetStream();  
-      indexPage = true;
-
-      });
-
-/*  Add Form data ///////////////////////////////     */    
+      /*  Add Form data ///////////////////////////////     */    
       $( "form" ).submit(function( event ) {
         var arr = $( this ).serializeArray();
-//        console.log('my arr = ', arr);
+      //        console.log('my arr = ', arr);
         var dateStamp = new Date();
         var $content = $('.content');
         
@@ -212,11 +188,12 @@
         var TwitterMessage = JSON.stringify(arr[1]["value"]);
         TwitterHandel = TwitterHandel.replace(/"/g, '');
         TwitterMessage = TwitterMessage.replace(/"/g, '');
+        user = TwitterHandel;
         
-     // newuser = TwitterHandel;
+      // newuser = TwitterHandel;
 
         var $newTweet = $('<div></div>');
-        $newTweet.html('<p> <a id="addNewTweetBtn" href="#" onclick="showIndividualNewUserTweets('+ TwitterHandel +')">@' + TwitterHandel + '</a> <small>' + dateStamp.toLocaleString() + '</small> </br> ' + TwitterMessage + '</p> ');
+        $newTweet.html('<p> <a href="#" id="singleUserClick2">@' +  TwitterHandel + '</a> <small>' + dateStamp.toLocaleString() + '</small> </br> ' + TwitterMessage + '</p> ');
         $newTweet.prependTo($content);
         event.preventDefault();
         
@@ -224,16 +201,14 @@
         newTweetObj.user = TwitterHandel;
         newTweetObj.message = TwitterMessage;
         newTweetObj.created_at = '' + dateStamp;
-        console.log('my new tweet user = ', newTweetObj.user);
-        console.log("my new obj = ", newTweetObj);
+        
 
         newTweetsArray.push(newTweetObj)
-        console.log('newTweetsArray = ', newTweetsArray);
 
-        $( "a" ).on( "click", function() {
+      $( "#singleUserClick2" ).on( "click", function() {
               //clearTimeout(myVar);
              // clearInterval(myTimeVar);
-          console.log("my new user is from inside the a click function = ", TwitterHandel);
+          console.log("my new user is from inside the click function = ", TwitterHandel);
           showIndividualNewUserTweets(TwitterHandel);
         });
 
@@ -242,81 +217,82 @@
       });
 
 
-/*  Show the Individual User tweets  ///////////////////////////////     */    
-  function showIndividualUserTweets(userName){
-   /* console.log('displayed ', displayed);
-    console.log('total ', total);
-    console.log('diff ', diff);
-    console.log('index ', index);*/
-    $('.back').show();
-//    console.log('line 235: my username inside showIndividualUserTweets function', userName);
+      /*  Show the Individual User tweets  ///////////////////////////////     */    
+      function showIndividualUserTweets(userName){
+       /* console.log('displayed ', displayed);
+        console.log('total ', total);
+        console.log('diff ', diff);
+        console.log('index ', index);*/
+        $('.back').show();
+      //    console.log('line 235: my username inside showIndividualUserTweets function', userName);
 
-    $content = $('.content');
-    $content.hide();  
-    $content2 = $('.content2');
-    $content2.html('');
-    $content2.show();
+        $content = $('.content');
+        $content.hide();  
+        $content2 = $('.content2');
+        $content2.html('');
+        $content2.show();
+        
+        for(var i = 0; i < streams.users[userName].length; i++){    
+          var msg = streams.users[userName][i].message;
+          var user = streams.users[userName][i].user;   
+          var userTime = streams.users[userName][i].created_at.toLocaleString();  
+          var $userTweetStream = $('<div></div>');
+
+          $userTweetStream.html('<p>@' + user + '<small> ' + userTime +  '</small></br>'  +  msg + '</p>');
+          $userTweetStream.prependTo($content2); 
+
+        }
+      } 
+
+
+      /*  Show the NEW USER Individual User tweets  ///////////////////////////////     */ 
+      function showIndividualNewUserTweets(newUserName){
+        $('.back').show();
+        $content = $('.content');
+        $content.hide();  
+        $content2 = $('.content2');
+        $content2.html('');
+        $content2.show();  
+
+        var filteredArr = filterItems(newUserName);
+
+
+         for(var i = 0; i < filteredArr.length; i++){   
+            var user = filteredArr[i].user;
+            var msg = filteredArr[i].message;
+            var userTime = filteredArr[i].created_at.toLocaleString(); 
+      //      console.log(user + ', ' + userTime +  '\n'  +  msg  );
+
+            var $newUserTweetStream = $('<div></div>');
+            $newUserTweetStream.html('<p>@' + user + '<small> ' + userTime +  '</small></br>'  +  msg + '</p>');
+            $newUserTweetStream.prependTo($content2); 
+
+        }
+      } 
+
+      function filterItems(query) {
+        return newTweetsArray.filter(function({user}) {
+          return user.toLowerCase().indexOf(query.toLowerCase()) > -1;
+        })
+      }
+
+      firstRunInitTweetStream();  
+      indexPage = true;
+
+
+/*      $( "a" ).on( "click", function() {
+        console.log('inside click = ', new Date() + '', user);
+        showIndividualUserTweets(user);
+      });*/
+
+    });
+
     
-    for(var i = 0; i < streams.users[userName].length; i++){    
-      var msg = streams.users[userName][i].message;
-      var user = streams.users[userName][i].user;   
-      var userTime = streams.users[userName][i].created_at.toLocaleString();  
-      var $userTweetStream = $('<div></div>');
-
-      $userTweetStream.html('<p>@' + user + '<small> ' + userTime +  '</small></br>'  +  msg + '</p>');
-      $userTweetStream.prependTo($content2); 
-
-
-  //  console.log(user + ', ' + userTime +  '\n'  +  msg  );
-
-    }
-  } 
-
-
-/*  Show the NEW USER Individual User tweets  ///////////////////////////////     */ 
-  function showIndividualNewUserTweets(newUserName){
-   /* console.log('displayed ', displayed);
-    console.log('total ', total);
-    console.log('diff ', diff);
-    console.log('index ', index);*/
-    $('.back').show();
-//    console.log('line 275: my username inside show NEW IndividualUserTweets function', newUserName);
-
-    $content = $('.content');
-    $content.hide();  
-    $content2 = $('.content2');
-    $content2.html('');
-    $content2.show();  
-//  console.log('line 283: newTweetsArray = ', newTweetsArray);
-
-    var filteredArr = filterItems(newUserName);
-//   console.log(filteredArr);  
-//   console.log('my username length in the array = ', newTweetsArray[newUserName].length); 
-
-     for(var i = 0; i < filteredArr.length; i++){   
-        var user = filteredArr[i].user;
-        var msg = filteredArr[i].message;
-        var userTime = filteredArr[i].created_at.toLocaleString(); 
-  //      console.log(user + ', ' + userTime +  '\n'  +  msg  );
-
-        var $newUserTweetStream = $('<div></div>');
-        $newUserTweetStream.html('<p>@' + user + '<small> ' + userTime +  '</small></br>'  +  msg + '</p>');
-        $newUserTweetStream.prependTo($content2); 
-
-    }
-  } 
-
-     function filterItems(query) {
-      return newTweetsArray.filter(function({user}) {
-        return user.toLowerCase().indexOf(query.toLowerCase()) > -1;
-      })
-    }
-    
-    function back(){
-      $('.back').hide();
-      $('.content').show(); 
-      $('.content2').hide(); 
-    }
+function back(){
+  $('.back').hide();
+  $('.content').show(); 
+  $('.content2').hide(); 
+}
 
 // add a tweet by someone
 // see the refreshing tweet stream
